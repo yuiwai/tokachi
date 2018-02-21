@@ -1,1 +1,1 @@
-# tokachi
+# com.yuiwai.tokachi
