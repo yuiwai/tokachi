@@ -7,7 +7,7 @@ import scala.concurrent.Future
 trait Handler[A <: Aggregation] {
   type Root = A#Root
   val rootRepository: Repository[Root]
-  private var locked: TrieMap[Root#ID, A] = TrieMap.empty
+  private val locked: TrieMap[Root#ID, A] = TrieMap.empty
   def makeAggregation(entity: Root): A
   def isLocked(aggregation: A): Boolean = locked.contains(aggregation.root.id.asInstanceOf[Root#ID])
   def lock(id: Root#ID): Future[Option[A]] = {

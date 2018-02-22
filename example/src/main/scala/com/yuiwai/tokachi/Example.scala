@@ -18,6 +18,7 @@ object Example extends App {
   assert(userAssetAgg.root.nextWeaponId == 2)
   assert(await(userAssetHandler.save(userAssetAgg)) == 2)
   assert(await(userAssetAgg.findUserWeapon(1)).isDefined)
+  userAssetHandler.flush()
   def await[T](f: Future[T]): T = Await.result(f, Duration.Inf)
 }
 
