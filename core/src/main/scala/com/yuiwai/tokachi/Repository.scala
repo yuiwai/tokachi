@@ -1,6 +1,6 @@
 package com.yuiwai.tokachi
 
-import scala.collection.mutable
+import scala.collection.concurrent.TrieMap
 import scala.concurrent.Future
 
 trait Repository[E <: Entity] {
@@ -11,7 +11,7 @@ trait Repository[E <: Entity] {
 }
 
 trait InMemoryRepository[E <: Entity] extends Repository[E] {
-  private val data: mutable.Map[E#ID, E] = mutable.Map.empty
+  private val data: TrieMap[E#ID, E] = TrieMap.empty
   override def lock(id: E#ID): Future[Option[E]] = Future.successful(data.get(id))
   override def find(id: E#ID): Future[Option[E]] = Future.successful(data.get(id))
   override def insert(entity: E): Future[Int] = {

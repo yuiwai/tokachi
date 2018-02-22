@@ -1,13 +1,13 @@
 package com.yuiwai.tokachi
 
-import scala.collection.mutable
+import scala.collection.concurrent.TrieMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 trait Handler[A <: Aggregation] {
   type Root = A#Root
   val rootRepository: Repository[Root]
-  private val locked: mutable.Map[Root#ID, A] = mutable.Map.empty
+  private var locked: TrieMap[Root#ID, A] = TrieMap.empty
   def makeAggregation(entity: Root): A
   def isLocked(aggregation: A): Boolean = locked.contains(aggregation.root.id.asInstanceOf[Root#ID])
   def lock(id: Root#ID): Future[Option[A]] = {
